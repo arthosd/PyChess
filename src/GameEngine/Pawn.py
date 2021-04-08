@@ -13,6 +13,52 @@ class Pawn:
         self._allowed_moves = []         # Les movement qui sont autorisées
         self._is_white = self._determinate_color(pawn_type)  # Boolean
 
+    def _simple_pawn_moves_generation(self, new_position):
+        """
+        Genère les positions du pion
+        """
+
+        # Limit gauche = 0
+        # Limit droite = 7
+        # Limit haute = 0
+        # Limit basse = 7
+
+        if self._is_white == True:  # Si le pion est blanc
+
+            pass
+        else:  # S'il est noir
+            pass
+
+    def _bishop_moves_generation(self, new_position):
+        """
+        Genère les positions du bishop
+        """
+        pass
+
+    def _king_moves_generation(self, new_position):
+        """
+        Genère les positions du roi
+        """
+        pass
+
+    def _queen_moves_generation(self, new_position):
+        """
+        Genère les positions du roi
+        """
+        pass
+
+    def _knight_moves_generation(self, new_position):
+        """
+        Genère les positions du cavalier
+        """
+        pass
+
+    def _rook_moves_generation(self, new_position):
+        """
+        Genère les positions de la tour
+        """
+        pass
+
     def get_pawn_type(self):
         """
         Le nom de la pièce
@@ -31,9 +77,29 @@ class Pawn:
         """
         return self.get_is_white
 
-    def _generate_new_moves(self, position):
+    def _generate_new_moves(self, pawn_position):
         """
+        On detecte le pion qui joue.
+        En fonction de ça, on calcul les nouvelles positions
         """
+
+        if self.get_pawn_type()[1] == "p":  # si'cest un simple paw
+            pass
+
+        elif self.get_pawn_type()[1] == "b":  # Si c'est un bishop
+            pass
+
+        elif self.get_pawn_type()[1] == "Q":  # Si c'est la Queen
+            pass
+
+        elif self.get_pawn_type()[1] == "K":  # Si c'est le King
+            pass
+
+        elif self.get_pawn_type()[1] == "k":  # Si c'est un knight
+            pass
+
+        else:  # Si c'est le rook
+            pass
         pass
 
     def is_move_allowed(self, move_tuple):

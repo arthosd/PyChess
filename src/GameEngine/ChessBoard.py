@@ -2,6 +2,7 @@
 Tablier du jeu d'échec
 """
 from src.GameEngine.Pawn import Pawn
+from src.GameEngine.Position import tulpe_position
 
 
 class ChessBoard:
@@ -13,17 +14,18 @@ class ChessBoard:
         self.white_points = []      # Tableau qui va contenir les pions mangé par les blancs
         self.black_points = []      # Tableau qui va contenir les pions mangé par les blancs
 
-    def _select_pawn(self, pawn_type):
+    def _select_pawn(self, positon):
         """
-        Selectionner un pion
+        Selectionner un pion en foncton de sa position
         """
+        pos = tulpe_position(positon[0], positon[1])
 
         for white in self.state[0]:  # On itère sur les blancs
-            if pawn == white._get_pawn_type():
+            if pos == white.get_position():
                 return white
 
         for black in self.state[1]:
-            if pawn == black._get_pawn_type():
+            if pos == black.get_position():
                 return black
 
         return None
@@ -43,21 +45,28 @@ class ChessBoard:
 
         return None
 
-    def play(self, pawn_name):
+    def play(self):
         """
         Récupère l'input d'un jouer
         """
 
-        move = None
+        print("Whites moves")
+        print("who to move")
+        move = input()
+        pawn_to_move = self._select_pawn(move)  # Le pion à bouger
+        if pawn_to_move == None:
+            print("None")
+        else:
+            print(pawn_to_move.resume())  # On affiche un résumé
 
-        if self.white_points:
+        """if self.white_points:
             print("White moves")
             move = input()
             # Il faut faire les vérification sur l'input
         else:
             print("Black moves")
             move = input()
-            # Il faut faire les vérification sur l'input
+            # Il faut faire les vérification sur l'input"""
 
         pass
 
@@ -138,14 +147,14 @@ class ChessBoard:
 
         # On commence à mettre dans une matrice les coordonnées
         drawing_board = [
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
+            [" ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " "],
         ]
 
         # On place les blancs
@@ -166,6 +175,14 @@ class ChessBoard:
 
         for rows in drawing_board:
             for element in rows:
-                print(element, sep=' \t', end='\t')
+                print("|  "+element, sep=' \t', end='\t')
 
-            print(" ", end="\n")
+            print("|", end="\n")
+
+            for compteur in range(8):
+                if compteur == 7:
+                    print("|-------|", end="")
+                    pass
+                else:
+                    print("|-------", end="")
+            print("", end="\n")

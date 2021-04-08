@@ -31,10 +31,23 @@ class Pawn:
         """
         return self.get_is_white
 
-    def _can_move(self, position_to_move):
-        # Vérifie si le pion peux bouger dans la position en argument.
-        # Renvoie un boolean True si oui, False sinon
+    def _generate_new_moves(self, position):
+        """
+        """
         pass
+
+    def is_move_allowed(self, move_tuple):
+        """
+        Return True si le tuple de mouvement est dans les mouvements
+        du pions.
+        Return False Sinon
+        """
+
+        for move in self._allowed_moves:
+            if move_tuple == move:
+                return True
+
+        return False
 
     def move_to(self, position):
         # Vérifie si le pion peux se déplacer à cet endroit

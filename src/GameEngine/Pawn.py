@@ -10,30 +10,94 @@ class Pawn:
         self._pawn_type = pawn_type      # Le type de la pièce
         # Tuple contenant la position de la pièces
         self._position = tulpe_position(position[0], position[1])
-        self._allowed_moves = []         # Les movement qui sont autorisées
+        # Les movement qui sont autorisées
         self._is_white = self._determinate_color(pawn_type)  # Boolean
+        self._allowed_moves = self._simple_pawn_moves_generation(
+            self._position)
 
     def _simple_pawn_moves_generation(self, new_position):
         """
-        Genère les positions du pion
+        Genère les positions du pions.
+
+        On renvoie un dictionnaire contenant les mouvements possibles
         """
 
-        # Limit gauche = 0
-        # Limit droite = 7
-        # Limit haute = 0
-        # Limit basse = 7
+        mouvement = []          # Va contenir tous les mouvements possibles
+        eatable_moves = []      # Contient les mouvements pour manger
 
-        if self._is_white == True:  # Si le pion est blanc
+        if self._is_white == False:  # Si le pion est blanc
 
-            pass
+            # Le tuple contenant la position du pion
+            posX, posY = new_position
+
+            new_pos = (posX, posY-1)
+
+            if new_pos[1] >= 0 and new_pos[1] <= 7:
+                # Le mouvement en avant du pion
+                mouvement.append(new_pos)
+
+                # Position pour manger
+                if new_pos[0] - 1 >= 0:
+                    eatable_moves.append((posX-1, posY-1))
+
+                if new_pos[0] + 1 <= 7:
+                    eatable_moves.append((posX+1, posY-1))
+
         else:  # S'il est noir
-            pass
+
+            # Le tuple contenant la position du pion
+            posX, posY = new_position
+
+            new_pos = (posX, posY+1)
+
+            if new_pos[1] >= 0 and new_pos[1] <= 7:
+                # Le mouvement en avant du pion
+                mouvement.append(new_pos)
+
+                # Position pour manger
+                if new_pos[0] - 1 >= 0:
+                    eatable_moves.append((posX-1, posY-1))
+
+                if new_pos[0] + 1 <= 7:
+                    eatable_moves.append((posX+1, posY-1))
+
+        return {"moves": mouvement, "eat_moves": eatable_moves}
 
     def _bishop_moves_generation(self, new_position):
         """
         Genère les positions du bishop
         """
-        pass
+
+        tab = []
+        stop_generating = False
+
+        # Generate up left
+        while stop_generating == False:
+
+            pass
+
+        stop_generating = False  # Restart
+
+        # Generate up right
+        while stop_generating == False:
+
+            pass
+
+        stop_generating = False  # Restart
+
+        # Generate down left
+        while stop_generating == False:
+
+            pass
+
+        stop_generating = False  # Restart
+
+        # Generate down rigth
+        while stop_generating == False:
+
+            pass
+
+        return tab
 
     def _king_moves_generation(self, new_position):
         """
@@ -51,6 +115,7 @@ class Pawn:
         """
         Genère les positions du cavalier
         """
+
         pass
 
     def _rook_moves_generation(self, new_position):
@@ -58,6 +123,12 @@ class Pawn:
         Genère les positions de la tour
         """
         pass
+
+    def get_allowed_moves(self):
+        """
+        Retourne le tableau contenant les position légales
+        """
+        return self._allowed_moves
 
     def get_pawn_type(self):
         """
@@ -123,6 +194,7 @@ class Pawn:
     def _determinate_color(self, pawn_type):
 
         first_letter = pawn_type[0]
+        print(first_letter)
 
         if first_letter == "w":
             return True

@@ -12,7 +12,7 @@ class Pawn:
         self._position = tulpe_position(position[0], position[1])
         # Les movement qui sont autorisées
         self._is_white = self._determinate_color(pawn_type)  # Boolean
-        self._allowed_moves = self._queen_moves_generation(
+        self._allowed_moves = self._rook_moves_generation(
             self._position)
 
     def _simple_pawn_moves_generation(self, new_position):
@@ -214,8 +214,6 @@ class Pawn:
             else:
                 stop_generating = True
 
-        stop_generating = False
-
         # On reprend les mouvements du fou
         bishop_moves = self._bishop_moves_generation(pos)
 
@@ -226,13 +224,114 @@ class Pawn:
         Genère les positions du cavalier
         """
 
-        pass
+        tab = []                    # Va contenir les positions généré
+        pos = new_position          # La position du pion
+
+        # Haut
+
+        temp_pos = (pos[0]-1, pos[1]+2)  # Gauche
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7:
+            tab.append(temp_pos)
+
+        temp_pos = (pos[0]+1, pos[1]+2)  # Droit
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7:
+            tab.append(temp_pos)
+
+        # Droit
+        temp_pos = (pos[0]+2, pos[1]-1)  # Haut
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7:
+            tab.append(temp_pos)
+
+        temp_pos = (pos[0]+2, pos[1]+1)  # Bas
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7:
+            tab.append(temp_pos)
+
+        # Bas
+        temp_pos = (pos[0]+1, pos[1]-2)  # Droit
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7:
+            tab.append(temp_pos)
+
+        temp_pos = (pos[0]-1, pos[1]-2)  # Gauche
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7:
+            tab.append(temp_pos)
+
+        # Gauche
+        temp_pos = (pos[0]-2, pos[1]-1)  # Haut
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7:
+            tab.append(temp_pos)
+
+        temp_pos = (pos[0]-2, pos[1]+1)  # Bas
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7:
+            tab.append(temp_pos)
+
+        return {"moves": tab, "eat_moves": tab}
 
     def _rook_moves_generation(self, new_position):
         """
         Genère les positions de la tour
         """
-        pass
+
+        tab = []                    # Va contenir les positions généré
+        pos = new_position          # La position du pion
+        stop_generating = False     # Pour stopper les boucles
+
+        temp_pos = pos
+
+        # On fait l'horizontal - gauche
+        while stop_generating == False:
+
+            temp_pos = (temp_pos[0]-1, temp_pos[1])
+
+            if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7:
+                tab.append(temp_pos)
+            else:
+                stop_generating = True
+
+        stop_generating = False
+
+        # On fait l'horizontal - droit
+        while stop_generating == False:
+
+            temp_pos = (temp_pos[0]+1, temp_pos[1])
+
+            if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7:
+                tab.append(temp_pos)
+            else:
+                stop_generating = True
+
+        stop_generating = False
+
+        # On fait la vertical - bas
+        while stop_generating == False:
+
+            temp_pos = (temp_pos[0], temp_pos[1]+1)
+
+            if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7:
+                tab.append(temp_pos)
+            else:
+                stop_generating = True
+
+        stop_generating = False
+
+        # On fait la vertical - haut
+        while stop_generating == False:
+
+            temp_pos = (temp_pos[0], temp_pos[1]-1)
+
+            if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7:
+                tab.append(temp_pos)
+            else:
+                stop_generating = True
+
+        return {"moves": tab, "eat_moves": tab}
 
     def get_allowed_moves(self):
         """

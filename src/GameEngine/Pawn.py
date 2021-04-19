@@ -12,7 +12,7 @@ class Pawn:
         self._position = tulpe_position(position[0], position[1])
         # Les movement qui sont autorisées
         self._is_white = self._determinate_color(pawn_type)  # Boolean
-        self._allowed_moves = self._simple_pawn_moves_generation(
+        self._allowed_moves = self._bishop_moves_generation(
             self._position)
 
     def _simple_pawn_moves_generation(self, new_position):
@@ -70,34 +70,55 @@ class Pawn:
 
         tab = []
         stop_generating = False
+        pos = new_position
 
         # Generate up left
         while stop_generating == False:
 
-            pass
+            pos = (pos[0]-1, pos[1]+1)
+
+            if pos[0] >= 0 and pos[0] <= 7 and pos[1] >= 0 and pos[1] <= 7:
+                tab.append(pos)
+            else:
+                stop_generating = True
 
         stop_generating = False  # Restart
 
         # Generate up right
         while stop_generating == False:
 
-            pass
+            pos = (pos[0]+1, pos[1]-1)
+
+            if pos[0] >= 0 and pos[0] <= 7 and pos[1] >= 0 and pos[1] <= 7:
+                tab.append(pos)
+            else:
+                stop_generating = True
 
         stop_generating = False  # Restart
 
         # Generate down left
         while stop_generating == False:
 
-            pass
+            pos = (pos[0]+1, pos[1]+1)
+
+            if pos[0] >= 0 and pos[0] <= 7 and pos[1] >= 0 and pos[1] <= 7:
+                tab.append(pos)
+            else:
+                stop_generating = True
 
         stop_generating = False  # Restart
 
         # Generate down rigth
         while stop_generating == False:
 
-            pass
+            pos = (pos[0]-1, pos[1]+1)
 
-        return tab
+            if pos[0] >= 0 and pos[0] <= 7 and pos[1] >= 0 and pos[1] <= 7:
+                tab.append(pos)
+            else:
+                stop_generating = True
+
+        return {"moves": tab, "eat_moves": tab}
 
     def _king_moves_generation(self, new_position):
         """

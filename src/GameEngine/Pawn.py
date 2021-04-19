@@ -7,11 +7,13 @@ class Pawn:
     """
 
     def __init__(self, pawn_type, position):
+        self._first_move = True          # Si c'est la premier fois qu'il bouge
         self._pawn_type = pawn_type      # Le type de la pièce
         # Tuple contenant la position de la pièces
         self._position = tulpe_position(position[0], position[1])
         # Les movement qui sont autorisées
         self._is_white = self._determinate_color(pawn_type)  # Boolean
+        # Les mouvements autorisés
         self._allowed_moves = self._generate_new_moves(
             self._position)
 
@@ -30,6 +32,13 @@ class Pawn:
             # Le tuple contenant la position du pion
             posX, posY = new_position
 
+            new_pos = (posX, posY-2)
+
+            if self._first_move == True:
+
+                self._first_move == False
+                mouvement.append(new_pos)
+
             new_pos = (posX, posY-1)
 
             if new_pos[1] >= 0 and new_pos[1] <= 7:
@@ -47,6 +56,13 @@ class Pawn:
 
             # Le tuple contenant la position du pion
             posX, posY = new_position
+
+            new_pos = (posX, posY+2)
+
+            if self._first_move == True:
+
+                self._first_move == False
+                mouvement.append(new_pos)
 
             new_pos = (posX, posY+1)
 

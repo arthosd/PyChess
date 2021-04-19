@@ -364,22 +364,22 @@ class Pawn:
         """
 
         if self.get_pawn_type()[1] == "p":  # si'cest un simple paw
-            self._simple_pawn_moves_generation(pawn_position)
+            return self._simple_pawn_moves_generation(pawn_position)
 
         elif self.get_pawn_type()[1] == "b":  # Si c'est un bishop
-            self._bishop_moves_generation(pawn_position)
+            return self._bishop_moves_generation(pawn_position)
 
         elif self.get_pawn_type()[1] == "Q":  # Si c'est la Queen
-            self._queen_moves_generation(pawn_position)
+            return self._queen_moves_generation(pawn_position)
 
         elif self.get_pawn_type()[1] == "K":  # Si c'est le King
-            self._king_moves_generation(pawn_position)
+            return self._king_moves_generation(pawn_position)
 
         elif self.get_pawn_type()[1] == "k":  # Si c'est un knight
-            self._knight_moves_generation(pawn_position)
+            return self._knight_moves_generation(pawn_position)
 
         else:  # Si c'est le rook
-            self._rook_moves_generation(pawn_position)
+            return self._rook_moves_generation(pawn_position)
 
     def is_move_allowed(self, move_tuple):
         """

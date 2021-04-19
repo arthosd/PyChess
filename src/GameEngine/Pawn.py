@@ -395,9 +395,11 @@ class Pawn:
         return False
 
     def move_to(self, position):
-        # Vérifie si le pion peux se déplacer à cet endroit
-        # Modifie le self.posiiton
-        pass
+        # On modifie la position de la pièce actuelle
+        self._position = tulpe_position(position[0], position[1])
+        # On génère les nouvelles positions
+        self._allowed_moves = self._generate_new_moves(
+            tulpe_position(position[0], position[1]))
 
     def _determinate_color(self, pawn_type):
 

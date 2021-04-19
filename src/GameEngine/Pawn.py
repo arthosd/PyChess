@@ -1,10 +1,10 @@
-"""
-Class qui va contenir un les données sur un pion
-"""
 from src.GameEngine.Position import tulpe_position
 
 
 class Pawn:
+    """
+    Class qui va contenir un les données sur un pion
+    """
 
     def __init__(self, pawn_type, position):
         self._pawn_type = pawn_type      # Le type de la pièce
@@ -12,7 +12,7 @@ class Pawn:
         self._position = tulpe_position(position[0], position[1])
         # Les movement qui sont autorisées
         self._is_white = self._determinate_color(pawn_type)  # Boolean
-        self._allowed_moves = self._rook_moves_generation(
+        self._allowed_moves = self._generate_new_moves(
             self._position)
 
     def _simple_pawn_moves_generation(self, new_position):
@@ -364,23 +364,22 @@ class Pawn:
         """
 
         if self.get_pawn_type()[1] == "p":  # si'cest un simple paw
-            pass
+            self._simple_pawn_moves_generation(pawn_position)
 
         elif self.get_pawn_type()[1] == "b":  # Si c'est un bishop
-            pass
+            self._bishop_moves_generation(pawn_position)
 
         elif self.get_pawn_type()[1] == "Q":  # Si c'est la Queen
-            pass
+            self._queen_moves_generation(pawn_position)
 
         elif self.get_pawn_type()[1] == "K":  # Si c'est le King
-            pass
+            self._king_moves_generation(pawn_position)
 
         elif self.get_pawn_type()[1] == "k":  # Si c'est un knight
-            pass
+            self._knight_moves_generation(pawn_position)
 
         else:  # Si c'est le rook
-            pass
-        pass
+            self._rook_moves_generation(pawn_position)
 
     def is_move_allowed(self, move_tuple):
         """

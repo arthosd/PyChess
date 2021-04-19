@@ -12,7 +12,7 @@ class Pawn:
         self._position = tulpe_position(position[0], position[1])
         # Les movement qui sont autorisées
         self._is_white = self._determinate_color(pawn_type)  # Boolean
-        self._allowed_moves = self._bishop_moves_generation(
+        self._allowed_moves = self._king_moves_generation(
             self._position)
 
     def _simple_pawn_moves_generation(self, new_position):
@@ -124,7 +124,38 @@ class Pawn:
         """
         Genère les positions du roi
         """
-        pass
+
+        tab = []  # Va contenir les positions généré
+        pos = new_position
+
+        # La ligne supérieur
+        for i in range(-1, 2, 1):
+
+            temp_pos = (pos[0]+i, pos[1]+1)
+
+            if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7:
+                tab.append(temp_pos)
+
+        # La ligne inférieur
+        for i in range(-1, 2, 1):
+            temp_pos = (pos[0]+i, pos[1]-1)
+
+            if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7:
+                tab.append(temp_pos)
+
+        # Faire les deux cotés manquants
+
+        temp_pos = (pos[0]-1, pos[1])
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7:
+            tab.append(temp_pos)
+
+        temp_pos = (pos[0]+1, pos[1])
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7:
+            tab.append(temp_pos)
+
+        return {"moves": tab, "eat_moves": tab}
 
     def _queen_moves_generation(self, new_position):
         """

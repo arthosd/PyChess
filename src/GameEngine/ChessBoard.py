@@ -23,27 +23,29 @@ class ChessBoard:
 
         mouvement = []          # Va contenir tous les mouvements possibles
 
-        if self._is_white == False:  # Si le pion est blanc
+        if pawn._is_white == True:  # Si le pion est blanc
 
             # Le tuple contenant la position du pion
             posX, posY = new_position
 
             new_pos = (posX, posY-1)
 
-            if new_pos[1] >= 0 and new_pos[1] <= 7 and self._get_pawn_at(new_pos) == False:
+            if new_pos[1] >= 0 and new_pos[1] <= 7 and self._is_there_pawn_at_position(new_pos) == False:
                 # Le mouvement en avant du pion
                 mouvement.append(new_pos)
 
             # Il faut faire les mouvement de manger
 
         else:  # S'il est noir
-
             # Le tuple contenant la position du pion
             posX, posY = new_position
 
             new_pos = (posX, posY+1)
 
-            if new_pos[1] >= 0 and new_pos[1] <= 7 and self._get_pawn_at(new_pos) == False:
+            p = self._get_pawn_at(new_pos)
+            p.resume()
+
+            if new_pos[1] >= 0 and new_pos[1] <= 7 and self._is_there_pawn_at_position(new_pos) == False:
                 # Le mouvement en avant du pion
                 mouvement.append(new_pos)
 
@@ -156,20 +158,27 @@ class ChessBoard:
                     if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
                         tab.append(temp_pos)
 
+        print(tab)
+
         # La ligne inférieur
         for i in range(-1, 2, 1):
             temp_pos = (pos[0]+i, pos[1]-1)
 
             if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
                 tab.append(temp_pos)
+                print("AJout")
             else:
                 # S'il y a quelqu'un à cette position
                 if self._is_there_pawn_at_position(temp_pos) == True:
                     # Si c'est un pion adversaire on le rajoute aux mouvements possibles
                     if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                        print(pawn.get_is_white())
                         tab.append(temp_pos)
+                        print("AJout")
 
         # Faire les deux cotés manquants
+
+        print(tab)
 
         temp_pos = (pos[0]-1, pos[1])
 
@@ -276,7 +285,7 @@ class ChessBoard:
                 stop_generating = True
 
         # On reprend les mouvements du fou
-        bishop_moves = self._bishop_moves_generation(pos)
+        bishop_moves = self._bishop_moves_generation(pawn, pos)
 
         tab = tab + bishop_moves
 
@@ -471,6 +480,25 @@ class ChessBoard:
         """
         On génere les moves possibles pour le pions
         """
+
+        if pawn.get_pawn_type()[1] == "p":  # si'cest un simple paw
+            return self._simple_pawn_moves_generation(pawn, pawn.get_position())
+
+        elif pawn.get_pawn_type()[1] == "b":  # Si c'est un bishop
+            return self._bishop_moves_generation(pawn, pawn.get_position())
+
+        elif pawn.get_pawn_type()[1] == "Q":  # Si c'est la Queen
+            return self._queen_moves_generation(pawn, pawn.get_position())
+
+        elif pawn.get_pawn_type()[1] == "K":  # Si c'est le King
+            return self._king_moves_generation(pawn, pawn.get_position())
+
+        elif pawn.get_pawn_type()[1] == "k":  # Si c'est un knight
+            return self._knight_moves_generation(pawn, pawn.get_position())
+
+        else:  # Si c'est le rook
+            return self._rook_moves_generation(pawn, pawn.get_position())
+
         pass
 
     def _select_pawn(self, positon):
@@ -552,8 +580,8 @@ class ChessBoard:
                     Pawn("wQ", "d1"),
                     Pawn("wK", "e1"),
                     Pawn("wb", "f1"),
-                    Pawn("wr", "g1"),
-                    Pawn("wk", "h1"),
+                    Pawn("wk", "g1"),
+                    Pawn("wr", "h1"),
                     Pawn("wp", "a2"),
                     Pawn("wp", "b2"),
                     Pawn("wp", "c2"),
@@ -570,8 +598,8 @@ class ChessBoard:
                     Pawn("bQ", "d8"),
                     Pawn("bK", "e8"),
                     Pawn("bb", "f8"),
-                    Pawn("br", "g8"),
-                    Pawn("bk", "h8"),
+                    Pawn("bk", "g8"),
+                    Pawn("br", "h8"),
                     Pawn("bp", "a7"),
                     Pawn("bp", "b7"),
                     Pawn("bp", "c7"),
@@ -622,11 +650,11 @@ class ChessBoard:
         blacks = self.state[1]
 
         for pawn in whites:
-            if pawn.get_position() == tulpe_position(positon[0], positon[1]):
+            if pawn.get_position() == positon:
                 return True
 
         for pawn in blacks:
-            if pawn.get_position() == tulpe_position(positon[0], positon[1]):
+            if pawn.get_position() == positon:
                 return True
 
         return False

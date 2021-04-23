@@ -147,11 +147,11 @@ class ChessBoard:
         blacks = self.state[1]
 
         for pawn in whites:
-            if pawn.get_position == tulpe_position(positon):
+            if pawn.get_position() == tulpe_position(positon[0], positon[1]):
                 return True
 
         for pawn in blacks:
-            if pawn.get_position == tulpe_position(positon):
+            if pawn.get_position() == tulpe_position(positon[0], positon[1]):
                 return True
 
         return False

@@ -537,25 +537,15 @@ class ChessBoard:
         Récupère l'input d'un jouer
         """
 
-        print("Whites moves")
-        print("who to move")
-        move = input()
-        pawn_to_move = self._select_pawn(move)  # Le pion à bouger
-        if pawn_to_move == None:
-            print("None")
-        else:
-            print(pawn_to_move.resume())  # On affiche un résumé
-
-        """if self.white_points:
-            print("White moves")
-            move = input()
-            # Il faut faire les vérification sur l'input
-        else:
-            print("Black moves")
-            move = input()
-            # Il faut faire les vérification sur l'input"""
-
-        pass
+        joue = input("Jouer :")
+        position = tulpe_position(joue[0], joue[1])
+        pawn = self._get_pawn_at(position)
+        if pawn != None:
+            pawn.resume()
+            moves = self._generate_moves(pawn)
+            vers = input("ou ? :")
+            to_position = tulpe_position(vers[0], vers[1])
+            print(self._allow_movement(pawn, to_position))
 
     def _is_pawn_eatable(self, pawn):
         """
@@ -616,27 +606,16 @@ class ChessBoard:
         else:
             return state
 
-    def _allow_movement(self, pawn, mouvement):
+    def _allow_movement(self, pawn, to_position):
         """
-        Vérifie si can_pawn_move = True
-        si oui, il vérifie s'il n'y a pas déjà un quelq'un à cette endroit
-        si, oui le pions est mangé et il est mit dans les points de l'équipe qui a mangé
+        On donne le pion qui va bouger ainsi que la position à laquelle il doit aller
         """
 
-        is_in_allowed_moves = pawn.is_move_allowed(
-            tulpe_position(mouvement[0], mouvement[1]))  # On vérifie que le
+        moves = self._generate_moves(pawn)  # On génre les moves possibles
 
-        if is_in_allowed_moves == True:                  # SI il est dans le mouvement
-
-            is_there_pawn = self._is_there_pawn_at_position(mouvement)
-
-            if is_there_pawn == False:
-                # On itère dans l'ordre d'arrivé des position
-                pass
-            else:
-                # On vois s'il est blanc ou noir
-                next_pawn = self._get_pawn_at(
-                    tulpe_position(mouvement[0], mouvement[1]))
+        for move in moves:
+            if to_position == move:
+                return True
 
         return False
 

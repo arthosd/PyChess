@@ -14,6 +14,465 @@ class ChessBoard:
         self.white_points = []      # Tableau qui va contenir les pions mangé par les blancs
         self.black_points = []      # Tableau qui va contenir les pions mangé par les blancs
 
+    def _simple_pawn_moves_generation(self, pawn, new_position):
+        """
+        Genère les positions du pions.
+
+        On renvoie un dictionnaire contenant les mouvements possibles
+        """
+
+        mouvement = []          # Va contenir tous les mouvements possibles
+
+        if self._is_white == False:  # Si le pion est blanc
+
+            # Le tuple contenant la position du pion
+            posX, posY = new_position
+
+            new_pos = (posX, posY-1)
+
+            if new_pos[1] >= 0 and new_pos[1] <= 7 and self._get_pawn_at(new_pos) == False:
+                # Le mouvement en avant du pion
+                mouvement.append(new_pos)
+
+            # Il faut faire les mouvement de manger
+
+        else:  # S'il est noir
+
+            # Le tuple contenant la position du pion
+            posX, posY = new_position
+
+            new_pos = (posX, posY+1)
+
+            if new_pos[1] >= 0 and new_pos[1] <= 7 and self._get_pawn_at(new_pos) == False:
+                # Le mouvement en avant du pion
+                mouvement.append(new_pos)
+
+            # Il faut faire les mouvement de manger
+
+        return mouvement
+
+    def _bishop_moves_generation(self, pawn, new_position):
+        """
+        Genère les positions du bishop
+        """
+
+        tab = []
+        stop_generating = False
+        pos = new_position
+
+        # Generate up left
+        while stop_generating == False:
+
+            pos = (pos[0]-1, pos[1]+1)
+
+            if pos[0] >= 0 and pos[0] <= 7 and pos[1] >= 0 and pos[1] <= 7 and self._is_there_pawn_at_position(pos) == False:
+                tab.append(pos)
+            else:
+                # S'il y a quelqu'un à cette position
+                if self._is_there_pawn_at_position(pos) == True:
+                    # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                    if self._get_pawn_at(pos).get_is_white() != pawn.get_is_white():
+                        tab.append(pos)
+
+                stop_generating = True
+
+        stop_generating = False  # Restart
+
+        # Generate up right
+        while stop_generating == False:
+
+            pos = (pos[0]+1, pos[1]-1)
+
+            if pos[0] >= 0 and pos[0] <= 7 and pos[1] >= 0 and pos[1] <= 7 and self._is_there_pawn_at_position(pos) == False:
+                tab.append(pos)
+            else:
+                # S'il y a quelqu'un à cette position
+                if self._is_there_pawn_at_position(pos) == True:
+                    # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                    if self._get_pawn_at(pos).get_is_white() != pawn.get_is_white():
+                        tab.append(pos)
+
+                stop_generating = True
+
+        stop_generating = False  # Restart
+
+        # Generate down left
+        while stop_generating == False:
+
+            pos = (pos[0]+1, pos[1]+1)
+
+            if pos[0] >= 0 and pos[0] <= 7 and pos[1] >= 0 and pos[1] <= 7 and self._is_there_pawn_at_position(pos) == False:
+                tab.append(pos)
+            else:
+                # S'il y a quelqu'un à cette position
+                if self._is_there_pawn_at_position(pos) == True:
+                    # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                    if self._get_pawn_at(pos).get_is_white() != pawn.get_is_white():
+                        tab.append(pos)
+
+                stop_generating = True
+
+        stop_generating = False  # Restart
+
+        # Generate down rigth
+        while stop_generating == False:
+
+            pos = (pos[0]-1, pos[1]+1)
+
+            if pos[0] >= 0 and pos[0] <= 7 and pos[1] >= 0 and pos[1] <= 7 and self._is_there_pawn_at_position(pos) == False:
+                tab.append(pos)
+            else:
+
+                # S'il y a quelqu'un à cette position
+                if self._is_there_pawn_at_position(pos) == True:
+                    # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                    if self._get_pawn_at(pos).get_is_white() != pawn.get_is_white():
+                        tab.append(pos)
+
+                stop_generating = True
+
+        # On rajoute les mouvements possibles dans le pion
+        return tab
+
+    def _king_moves_generation(self, pawn, new_position):
+        """
+        Genère les positions du roi
+        """
+
+        tab = []  # Va contenir les positions généré
+        pos = new_position
+
+        # La ligne supérieur
+        for i in range(-1, 2, 1):
+
+            temp_pos = (pos[0]+i, pos[1]+1)
+
+            if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+                tab.append(temp_pos)
+            else:
+                # S'il y a quelqu'un à cette position
+                if self._is_there_pawn_at_position(temp_pos) == True:
+                    # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                    if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                        tab.append(temp_pos)
+
+        # La ligne inférieur
+        for i in range(-1, 2, 1):
+            temp_pos = (pos[0]+i, pos[1]-1)
+
+            if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+                tab.append(temp_pos)
+            else:
+                # S'il y a quelqu'un à cette position
+                if self._is_there_pawn_at_position(temp_pos) == True:
+                    # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                    if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                        tab.append(temp_pos)
+
+        # Faire les deux cotés manquants
+
+        temp_pos = (pos[0]-1, pos[1])
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+            tab.append(temp_pos)
+        else:
+            # S'il y a quelqu'un à cette position
+            if self._is_there_pawn_at_position(temp_pos) == True:
+                # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                    tab.append(temp_pos)
+
+        temp_pos = (pos[0]+1, pos[1])
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+            tab.append(temp_pos)
+        else:
+            # S'il y a quelqu'un à cette position
+            if self._is_there_pawn_at_position(temp_pos) == True:
+                # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                    tab.append(temp_pos)
+
+        return tab
+
+    def _queen_moves_generation(self, pawn, new_position):
+        """
+        Genère les positions de la reine
+        """
+
+        tab = []                    # Va contenir les positions généré
+        pos = new_position          # La position du pion
+        stop_generating = False     # Pour stopper les boucles
+
+        temp_pos = pos
+
+        # On fait l'horizontal - gauche
+        while stop_generating == False:
+
+            temp_pos = (temp_pos[0]-1, temp_pos[1])
+
+            if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+                tab.append(temp_pos)
+            else:
+                # S'il y a quelqu'un à cette position
+                if self._is_there_pawn_at_position(temp_pos) == True:
+                    # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                    if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                        tab.append(temp_pos)
+
+                stop_generating = True
+
+        stop_generating = False
+
+        # On fait l'horizontal - droit
+        while stop_generating == False:
+
+            temp_pos = (temp_pos[0]+1, temp_pos[1])
+
+            if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+                tab.append(temp_pos)
+            else:
+                # S'il y a quelqu'un à cette position
+                if self._is_there_pawn_at_position(temp_pos) == True:
+                    # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                    if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                        tab.append(temp_pos)
+
+                stop_generating = True
+
+        stop_generating = False
+
+        # On fait la vertical - bas
+        while stop_generating == False:
+
+            temp_pos = (temp_pos[0], temp_pos[1]+1)
+
+            if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+                tab.append(temp_pos)
+            else:
+                # S'il y a quelqu'un à cette position
+                if self._is_there_pawn_at_position(temp_pos) == True:
+                    # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                    if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                        tab.append(temp_pos)
+                stop_generating = True
+
+        stop_generating = False
+
+        # On fait la vertical - haut
+        while stop_generating == False:
+
+            temp_pos = (temp_pos[0], temp_pos[1]-1)
+
+            if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+                tab.append(temp_pos)
+            else:
+                # S'il y a quelqu'un à cette position
+                if self._is_there_pawn_at_position(temp_pos) == True:
+                    # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                    if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                        tab.append(temp_pos)
+
+                stop_generating = True
+
+        # On reprend les mouvements du fou
+        bishop_moves = self._bishop_moves_generation(pos)
+
+        tab = tab + bishop_moves
+
+        return tab
+
+    def _knight_moves_generation(self, pawn, new_position):
+        """
+        Genère les positions du cavalier
+        """
+
+        tab = []                    # Va contenir les positions généré
+        pos = new_position          # La position du pion
+
+        # Haut
+
+        temp_pos = (pos[0]-1, pos[1]+2)  # Gauche
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+            tab.append(temp_pos)
+        else:
+            # S'il y a quelqu'un à cette position
+            if self._is_there_pawn_at_position(temp_pos) == True:
+                # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                    tab.append(temp_pos)
+
+        temp_pos = (pos[0]+1, pos[1]+2)  # Droit
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+            tab.append(temp_pos)
+        else:
+            # S'il y a quelqu'un à cette position
+            if self._is_there_pawn_at_position(temp_pos) == True:
+                # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                    tab.append(temp_pos)
+
+        # Droit
+        temp_pos = (pos[0]+2, pos[1]-1)  # Haut
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+            tab.append(temp_pos)
+        else:
+            # S'il y a quelqu'un à cette position
+            if self._is_there_pawn_at_position(temp_pos) == True:
+                # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                    tab.append(temp_pos)
+
+        temp_pos = (pos[0]+2, pos[1]+1)  # Bas
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+            tab.append(temp_pos)
+        else:
+            # S'il y a quelqu'un à cette position
+            if self._is_there_pawn_at_position(temp_pos) == True:
+                # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                    tab.append(temp_pos)
+
+        # Bas
+        temp_pos = (pos[0]+1, pos[1]-2)  # Droit
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+            tab.append(temp_pos)
+        else:
+            # S'il y a quelqu'un à cette position
+            if self._is_there_pawn_at_position(temp_pos) == True:
+                # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                    tab.append(temp_pos)
+
+        temp_pos = (pos[0]-1, pos[1]-2)  # Gauche
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+            tab.append(temp_pos)
+        else:
+            # S'il y a quelqu'un à cette position
+            if self._is_there_pawn_at_position(temp_pos) == True:
+                # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                    tab.append(temp_pos)
+
+        # Gauche
+        temp_pos = (pos[0]-2, pos[1]-1)  # Haut
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+            tab.append(temp_pos)
+        else:
+            # S'il y a quelqu'un à cette position
+            if self._is_there_pawn_at_position(temp_pos) == True:
+                # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                    tab.append(temp_pos)
+
+        temp_pos = (pos[0]-2, pos[1]+1)  # Bas
+
+        if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+            tab.append(temp_pos)
+        else:
+            # S'il y a quelqu'un à cette position
+            if self._is_there_pawn_at_position(temp_pos) == True:
+                # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                    tab.append(temp_pos)
+
+        return tab
+
+    def _rook_moves_generation(self, pawn, new_position):
+        """
+        Genère les positions de la tour
+        """
+
+        tab = []                    # Va contenir les positions généré
+        pos = new_position          # La position du pion
+        stop_generating = False     # Pour stopper les boucles
+
+        temp_pos = pos
+
+        # On fait l'horizontal - gauche
+        while stop_generating == False:
+
+            temp_pos = (temp_pos[0]-1, temp_pos[1])
+
+            if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+                tab.append(temp_pos)
+            else:
+                # S'il y a quelqu'un à cette position
+                if self._is_there_pawn_at_position(temp_pos) == True:
+                    # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                    if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                        tab.append(temp_pos)
+                stop_generating = True
+
+        stop_generating = False
+
+        # On fait l'horizontal - droit
+        while stop_generating == False:
+
+            temp_pos = (temp_pos[0]+1, temp_pos[1])
+
+            if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+                tab.append(temp_pos)
+            else:
+                # S'il y a quelqu'un à cette position
+                if self._is_there_pawn_at_position(temp_pos) == True:
+                    # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                    if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                        tab.append(temp_pos)
+
+                stop_generating = True
+
+        stop_generating = False
+
+        # On fait la vertical - bas
+        while stop_generating == False:
+
+            temp_pos = (temp_pos[0], temp_pos[1]+1)
+
+            if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+                tab.append(temp_pos)
+            else:
+                # S'il y a quelqu'un à cette position
+                if self._is_there_pawn_at_position(temp_pos) == True:
+                    # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                    if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                        tab.append(temp_pos)
+
+                stop_generating = True
+
+        stop_generating = False
+
+        # On fait la vertical - haut
+        while stop_generating == False:
+
+            temp_pos = (temp_pos[0], temp_pos[1]-1)
+
+            if temp_pos[0] >= 0 and temp_pos[0] <= 7 and temp_pos[1] >= 0 and temp_pos[1] <= 7 and self._is_there_pawn_at_position(temp_pos) == False:
+                tab.append(temp_pos)
+            else:
+                # S'il y a quelqu'un à cette position
+                if self._is_there_pawn_at_position(temp_pos) == True:
+                    # Si c'est un pion adversaire on le rajoute aux mouvements possibles
+                    if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
+                        tab.append(temp_pos)
+
+                stop_generating = True
+
+        return tab
+
+    def _generate_moves(self, pawn):
+        """
+        On génere les moves possibles pour le pions
+        """
+        pass
+
     def _select_pawn(self, positon):
         """
         Selectionner un pion en foncton de sa position
@@ -129,13 +588,29 @@ class ChessBoard:
         else:
             return state
 
-    def _allow_movement(self, can_pawn_move,):
+    def _allow_movement(self, pawn, mouvement):
         """
         Vérifie si can_pawn_move = True
         si oui, il vérifie s'il n'y a pas déjà un quelq'un à cette endroit
         si, oui le pions est mangé et il est mit dans les points de l'équipe qui a mangé
         """
-        pass
+
+        is_in_allowed_moves = pawn.is_move_allowed(
+            tulpe_position(mouvement[0], mouvement[1]))  # On vérifie que le
+
+        if is_in_allowed_moves == True:                  # SI il est dans le mouvement
+
+            is_there_pawn = self._is_there_pawn_at_position(mouvement)
+
+            if is_there_pawn == False:
+                # On itère dans l'ordre d'arrivé des position
+                pass
+            else:
+                # On vois s'il est blanc ou noir
+                next_pawn = self._get_pawn_at(
+                    tulpe_position(mouvement[0], mouvement[1]))
+
+        return False
 
     def _is_there_pawn_at_position(self, positon):
         """

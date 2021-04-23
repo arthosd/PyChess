@@ -14,8 +14,9 @@ class Pawn:
         # Les movement qui sont autorisées
         self._is_white = self._determinate_color(pawn_type)  # Boolean
         # Les mouvements autorisés
-        self._allowed_moves = self._generate_new_moves(
-            self._position)
+        """self._allowed_moves = self._generate_new_moves(
+            self._position)"""
+        self._allowed_moves = []
 
     def _simple_pawn_moves_generation(self, new_position):
         """
@@ -77,7 +78,7 @@ class Pawn:
                 if new_pos[0] + 1 <= 7:
                     eatable_moves.append((posX+1, posY-1))
 
-        return {"moves": mouvement, "eat_moves": eatable_moves}
+        return {"moves": {"up": mouvement}, "eat_moves": eatable_moves}
 
     def _bishop_moves_generation(self, new_position):
         """
@@ -426,6 +427,9 @@ class Pawn:
             return True
         else:
             return False
+
+    def set_allowed_moves(self, positions):
+        self._allowed_moves = positions
 
     def resume(self):
         print("\t"+str(self._pawn_type))

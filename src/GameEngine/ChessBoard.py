@@ -138,7 +138,23 @@ class ChessBoard:
         pass
 
     def _is_there_pawn_at_position(self, positon):
-        pass
+        """
+        Renvoie True s'il y a un pion à la posiiton données.
+        False Sinon.
+        """
+
+        whites = self.state[0]
+        blacks = self.state[1]
+
+        for pawn in whites:
+            if pawn.get_position == tulpe_position(positon):
+                return True
+
+        for pawn in blacks:
+            if pawn.get_position == tulpe_position(positon):
+                return True
+
+        return False
 
     def draw_board(self):
         """

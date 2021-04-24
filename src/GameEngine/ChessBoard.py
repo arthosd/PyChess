@@ -549,25 +549,10 @@ class ChessBoard:
 
         pass
 
-    def _select_pawn(self, positon):
-        """
-        Selectionner un pion en foncton de sa position
-        """
-        pos = tulpe_position(positon[0], positon[1])
-
-        for white in self.state[0]:  # On itère sur les blancs
-            if pos == white.get_position():
-                return white
-
-        for black in self.state[1]:
-            if pos == black.get_position():
-                return black
-
-        return None
-
     def _get_pawn_at(self, positon):
         """
-        Récupère le pion à la position donnée en argument
+        Récupère le pion à la position donnée en argument.
+        Renvoie None s'il n'y a pas de pion.
         """
 
         for white in self.state[0]:  # On itère sur les blancs
@@ -580,20 +565,117 @@ class ChessBoard:
 
         return None
 
-    def play(self):
+    def _select_pawn(self, is_white):
+
+        is_pawn_selected = False
+
+        if is_white == True:
+            print("White moves.")
+        else:
+            print("Black moves.")
+
+        while is_pawn_selected == False:
+
+            position = input("Indicate piece position: ")
+            position = tulpe_position(position[0], position[1])
+            pawn = self._get_pawn_at(position)
+
+            # Si le pion existe et qu'il est de la meme couleur que le joueur
+            if pawn != None and pawn.get_is_white() == is_white:
+                moves = self._generate_moves(pawn)
+
+                if len(moves) != 0:
+                    return (pawn, moves)
+                else:
+                    print("Pas de position possible pour cette pièce")
+            else:
+                if pawn == None:
+                    print("No piece at this position.")
+                else:
+                    print("It's not your piece")
+
+    def _select_destination(self, pawn, moves):
         """
-        Récupère l'input d'un jouer
+        Demande à l'utilisateur de choisir une position
+        et vérifie que cette position est autorisé.
         """
 
-        joue = input("Jouer :")
-        position = tulpe_position(joue[0], joue[1])
-        pawn = self._get_pawn_at(position)
-        if pawn != None:
-            pawn.resume()
-            moves = self._generate_moves(pawn)
-            vers = input("ou ? :")
-            to_position = tulpe_position(vers[0], vers[1])
-            print(self._allow_movement(pawn, to_position))
+        destination_selected = False
+
+        while destination_selected == False:
+
+            destination = input("Indicate destination: ")
+            destination = tulpe_position(destination[0], destination[1])
+
+            is_allowed = self._allow_movement(pawn, moves, destination)
+
+            if is_allowed == True:
+                return destination
+            else:
+                print("Forbidden mouvement.", end=" ")
+
+        return None
+
+    def _eat(self, pawn):
+        """
+        Eat pawn 
+        """
+
+        pawn_color = pawn.get_is_white()
+
+        if pawn_color == True:  # S'il est blanc
+            # On cherche dans les Blancs
+
+            compteur = 0
+
+            for white in self.state[0]:
+                if white == pawn:
+                    print(self.state[0].pop(compteur))
+
+                compteur = compteur + 1
+        else:  # S'il est noir
+            # On change dans les noirs
+            compteur = 0
+
+            for white in self.state[1]:
+                if white == pawn:
+                    print(self.state[1].pop(compteur))
+
+                compteur = compteur + 1
+
+    def _eatOrMove(self, pawn, destination):
+        """
+        Vérifie s'il y a un pion à manger sur le terrain à la destination donné.
+        Sinon juste fait bouger le pion à la position donner
+        """
+
+        destination_pawn = self._get_pawn_at(destination)
+
+        if destination_pawn == None:
+            # On bouge le pion
+            pawn.move_to(destination)
+        else:
+            self._eat(destination_pawn)
+
+    def play(self):
+        """
+        Fonction principale pour le jeu
+        """
+
+        stop_game = False                   # Décide de stopper ou non le jeu
+
+        while stop_game == False:
+
+            pawn_selected, moves = self._select_pawn(
+                self.white_to_move)    # On choisi un pion
+            destination = self._select_destination(
+                pawn_selected, moves)  # On choisi un destination
+
+            self._eatOrMove(pawn_selected, destination)
+
+            self.draw_board()
+
+            self.white_to_move = not self.white_to_move  # C'est à l'autre équipe de jouer
 
     def _is_pawn_eatable(self, pawn):
         """
@@ -654,14 +736,14 @@ class ChessBoard:
         else:
             return state
 
-    def _allow_movement(self, pawn, to_position):
+    def _allow_movement(self, pawn, moves, to_position):
         """
         On donne le pion qui va bouger ainsi que la position à laquelle il doit aller
         """
 
-        moves = self._generate_moves(pawn)  # On génre les moves possibles
+        mouvements = moves  # On génre les moves possibles
 
-        for move in moves:
+        for move in mouvements:
             if to_position == move:
                 return True
 

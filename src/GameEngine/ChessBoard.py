@@ -4,6 +4,7 @@ Tablier du jeu d'échec
 from src.GameEngine.Pawn import Pawn
 from src.GameEngine.Position import tulpe_position, string_position
 from src.FileEngine.history import write_in_history, close_file
+from src.FileEngine.load import serialize_object
 
 
 class ChessBoard:
@@ -581,6 +582,12 @@ class ChessBoard:
         while is_pawn_selected == False:
 
             position = input("Indicate piece position: ")
+
+            if position == "save":
+                # On sauvegarde le jeu et on quitte
+                serialize_object(self)
+                return (None, None)
+
             position = tulpe_position(position[0], position[1])
             pawn = self._get_pawn_at(position)
 
@@ -697,6 +704,10 @@ class ChessBoard:
 
             pawn_selected, moves = self._select_pawn(
                 self.white_to_move)    # On choisi un pion
+
+            if pawn_selected == None:
+                print("La partie à bien été enregistré")
+                break
 
             sentence = str(team_name)+" chose " + \
                 pawn_selected.get_pawn_type()+" at position " + \

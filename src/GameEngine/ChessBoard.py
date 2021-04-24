@@ -45,8 +45,10 @@ class ChessBoard:
         else:  # S'il est noir
             # Le tuple contenant la position du pion
 
+            posX, posY = new_position
+
             if is_first_move == True:
-                new_pos = (posX, posY-2)
+                new_pos = (posX, posY+2)
                 if new_pos[1] >= 0 and new_pos[1] <= 7 and self._is_there_pawn_at_position(new_pos) == False:
                     # Le mouvement en avant du pion
                     mouvement.append(new_pos)

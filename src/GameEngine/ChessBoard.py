@@ -40,7 +40,25 @@ class ChessBoard:
                 # Le mouvement en avant du pion
                 mouvement.append(new_pos)
 
-            # Il faut faire les mouvement de manger
+            # Vérifier qu'il y a un pion dans les digonales
+
+            new_pos = (posX+1, posY + 1)
+
+            if self._is_there_pawn_at_position(new_pos) == True:
+
+                temp_pawn = self._get_pawn_at(new_pos)  # On récupère le pion
+
+                if temp_pawn.get_is_white() != pawn.get_is_white():  # S'il est de couleur différente du pion
+                    mouvement.append(new_pos)
+
+            new_pos = (posX - 1, posY + 1)
+
+            if self._is_there_pawn_at_position(new_pos) == True:
+
+                temp_pawn = self._get_pawn_at(new_pos)  # On récupère le pion
+
+                if temp_pawn.get_is_white() != pawn.get_is_white():  # S'il est de couleur différente du pion
+                    mouvement.append(new_pos)
 
         else:  # S'il est noir
             # Le tuple contenant la position du pion

@@ -81,6 +81,24 @@ class ChessBoard:
 
             # Il faut faire les mouvement de manger
 
+            new_pos = (posX+1, posY - 1)
+
+            if self._is_there_pawn_at_position(new_pos) == True:
+
+                temp_pawn = self._get_pawn_at(new_pos)  # On récupère le pion
+
+                if temp_pawn.get_is_white() != pawn.get_is_white():  # S'il est de couleur différente du pion
+                    mouvement.append(new_pos)
+
+            new_pos = (posX - 1, posY - 1)
+
+            if self._is_there_pawn_at_position(new_pos) == True:
+
+                temp_pawn = self._get_pawn_at(new_pos)  # On récupère le pion
+
+                if temp_pawn.get_is_white() != pawn.get_is_white():  # S'il est de couleur différente du pion
+                    mouvement.append(new_pos)
+
         return mouvement
 
     def _bishop_moves_generation(self, pawn, new_position):

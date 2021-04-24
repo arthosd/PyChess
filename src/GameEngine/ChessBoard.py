@@ -2,7 +2,8 @@
 Tablier du jeu d'échec
 """
 from src.GameEngine.Pawn import Pawn
-from src.GameEngine.Position import tulpe_position
+from src.GameEngine.Position import tulpe_position, string_position
+from src.FileEngine.history import write_in_history, close_file
 
 
 class ChessBoard:
@@ -637,6 +638,8 @@ class ChessBoard:
                     self.black_points.append(pawn_eaten)
                     # Si le pion manger est un des rois
                     if pawn_eaten.get_pawn_type()[1] == "K":
+                        sentence = "A king is dead"
+                        write_in_history(sentence)
                         self._stop_game = True
 
                 compteur = compteur + 1
@@ -651,6 +654,8 @@ class ChessBoard:
 
                     # Si le pion manger est un des rois
                     if pawn_eaten.get_pawn_type()[1] == "K":
+                        sentence = "A king is dead"
+                        write_in_history(sentence)
                         self._stop_game = True
 
                 compteur = compteur + 1
@@ -666,9 +671,14 @@ class ChessBoard:
         if destination_pawn != None:
             # on mange le pion
             self._eat(destination_pawn)
+            sentence = pawn.get_pawn_type()+" ate "+destination_pawn.get_pawn_type()
+            write_in_history(sentence)
 
         # On bouge le pion
         pawn.move_to(destination)
+        sentence = "White moved " + pawn.get_pawn_type() + " to " + \
+            string_position(destination)
+        write_in_history(sentence)
 
     def play(self):
         """
@@ -678,9 +688,22 @@ class ChessBoard:
         while self._stop_game == False:
 
             self.white_to_move = not self.white_to_move  # C'est à l'autre équipe de jouer
+            team_name = "White" if self.white_to_move == True else "Black"
+
+            sentence = "========== " + \
+                str(team_name) + " Moves ==========" + "\n"
+
+            write_in_history(sentence)
 
             pawn_selected, moves = self._select_pawn(
                 self.white_to_move)    # On choisi un pion
+
+            sentence = str(team_name)+" chose " + \
+                pawn_selected.get_pawn_type()+" at position " + \
+                string_position(pawn_selected.get_position())
+
+            write_in_history(sentence)
+
             destination = self._select_destination(
                 pawn_selected, moves)  # On choisi un destination
 
@@ -692,8 +715,16 @@ class ChessBoard:
         # On déclare le vainqueur
         if self.white_to_move == True:
             print("Whites wins.")
+            sentence = "================= ================= ==============="
+            write_in_history(sentence)
+            sentence = "Whites Wins"
+            write_in_history(sentence)
         else:
             print("Blacks win.")
+            sentence = "================= ================= ==============="
+            write_in_history(sentence)
+            sentence = "Blacks Wins"
+            write_in_history(sentence)
 
     def _is_pawn_eatable(self, pawn):
         """

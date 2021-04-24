@@ -630,7 +630,8 @@ class ChessBoard:
 
             for white in self.state[0]:
                 if white == pawn:
-                    print(self.state[0].pop(compteur))
+                    pawn_eaten = self.state[0].pop(compteur)
+                    self.black_points.append(pawn_eaten)
 
                 compteur = compteur + 1
         else:  # S'il est noir
@@ -639,7 +640,8 @@ class ChessBoard:
 
             for white in self.state[1]:
                 if white == pawn:
-                    print(self.state[1].pop(compteur))
+                    pawn_eaten = self.state[1].pop(compteur)
+                    self.white_points.append(pawn_eaten)
 
                 compteur = compteur + 1
 

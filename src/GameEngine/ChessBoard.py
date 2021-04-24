@@ -10,9 +10,11 @@ class ChessBoard:
     def __init__(self, state=[]):
         # Les pions qui sont sur le tablier
         self.state = self._generate_state(state)
-        self.white_to_move = True   # Les pions blanc joue
+        self.white_to_move = False  # Les pions blanc joue
         self.white_points = []      # Tableau qui va contenir les pions mangé par les blancs
         self.black_points = []      # Tableau qui va contenir les pions mangé par les blancs
+        # Quand = True le partie s'arrete et le vainqueur est désigné
+        self._stop_game = False
 
     def _simple_pawn_moves_generation(self, pawn, new_position):
         """
@@ -632,6 +634,9 @@ class ChessBoard:
                 if white == pawn:
                     pawn_eaten = self.state[0].pop(compteur)
                     self.black_points.append(pawn_eaten)
+                    # Si le pion manger est un des rois
+                    if pawn_eaten.get_pawn_type()[1] == "K":
+                        self._stop_game = True
 
                 compteur = compteur + 1
         else:  # S'il est noir
@@ -642,6 +647,10 @@ class ChessBoard:
                 if white == pawn:
                     pawn_eaten = self.state[1].pop(compteur)
                     self.white_points.append(pawn_eaten)
+
+                    # Si le pion manger est un des rois
+                    if pawn_eaten.get_pawn_type()[1] == "K":
+                        self._stop_game = True
 
                 compteur = compteur + 1
 
@@ -665,9 +674,9 @@ class ChessBoard:
         Fonction principale pour le jeu
         """
 
-        stop_game = False                   # Décide de stopper ou non le jeu
+        while self._stop_game == False:
 
-        while stop_game == False:
+            self.white_to_move = not self.white_to_move  # C'est à l'autre équipe de jouer
 
             pawn_selected, moves = self._select_pawn(
                 self.white_to_move)    # On choisi un pion
@@ -678,7 +687,11 @@ class ChessBoard:
 
             self.draw_board()
 
-            self.white_to_move = not self.white_to_move  # C'est à l'autre équipe de jouer
+        # On déclare le vainqueur
+        if self.white_to_move == True:
+            print("Whites wins.")
+        else:
+            print("Blacks win.")
 
     def _is_pawn_eatable(self, pawn):
         """

@@ -620,7 +620,7 @@ class ChessBoard:
 
     def _eat(self, pawn):
         """
-        Eat pawn 
+        Eat pawn
         """
 
         pawn_color = pawn.get_is_white()
@@ -789,6 +789,8 @@ class ChessBoard:
         dessine le board
         """
 
+        letters = ["a", "b", "c", "d", "e", "f", "g", "h"]
+
         # On commence à mettre dans une matrice les coordonnées
         drawing_board = [
             [" ", " ", " ", " ", " ", " ", " ", " "],
@@ -817,16 +819,48 @@ class ChessBoard:
 
             drawing_board[posx][posY] = black.get_pawn_type()  # Le nom du pion
 
+        # On dessine les lettres
+
+        print("  ", sep=' \t', end='\t')
+
+        for letter in letters:
+            print("   "+letter, sep=' \t', end='\t')
+
+        print("", end="\n")
+
+        for compteur in range(9):
+            if compteur == 0:
+                print("\t", end="")
+                pass
+            elif compteur == 8:
+                print("|-------|", end="")
+                pass
+            else:
+                print("|-------", end="")
+
+        print("", end="\n")
+
+        # On dessine les pions
+
+        i = 8
+
         for rows in drawing_board:
+            # On dessine les chiffres
+            print("    "+str(i), end='\t')
+            i = i - 1
+
             for element in rows:
                 print("|  "+element, sep=' \t', end='\t')
 
             print("|", end="\n")
 
-            for compteur in range(8):
-                if compteur == 7:
-                    print("|-------|", end="")
+            for compteur in range(9):
+                if compteur == 0:
+                    print("", end="\t")
                     pass
+                elif compteur == 8:
+                    print("|-------|", end="")
                 else:
                     print("|-------", end="")
+
             print("", end="\n")

@@ -87,7 +87,6 @@ class Pawn:
     def _determinate_color(self, pawn_type):
 
         first_letter = pawn_type[0]
-        print(first_letter)
 
         if first_letter == "w":
             return True

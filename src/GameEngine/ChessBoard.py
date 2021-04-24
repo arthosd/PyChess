@@ -15,6 +15,7 @@ class ChessBoard:
         self.black_points = []      # Tableau qui va contenir les pions mangé par les blancs
         # Quand = True le partie s'arrete et le vainqueur est désigné
         self._stop_game = False
+        self._compteur_partie = 1   # Le compteur d'une partie
 
     def _simple_pawn_moves_generation(self, pawn, new_position):
         """
@@ -686,6 +687,7 @@ class ChessBoard:
             self._eatOrMove(pawn_selected, destination)
 
             self.draw_board()
+            self._compteur_partie = self._compteur_partie + 1
 
         # On déclare le vainqueur
         if self.white_to_move == True:

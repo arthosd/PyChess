@@ -2,10 +2,7 @@
 from src.GameEngine.ChessBoard import ChessBoard
 from src.GameEngine.Pawn import Pawn
 
-#chessBoard = ChessBoard()
-# chessBoard.draw_board()
+chessBoard = ChessBoard()
+chessBoard.draw_board()
 
-pion = Pawn("bp", "a1")
-
-pion.resume()
-print(pion.get_pawn_type()[1])
+chessBoard.play()

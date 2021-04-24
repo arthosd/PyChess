@@ -17,9 +17,9 @@ class ChessBoard:
     def _simple_pawn_moves_generation(self, pawn, new_position):
         """
         Genère les positions du pions.
-
-        On renvoie un dictionnaire contenant les mouvements possibles
         """
+
+        is_first_move = pawn.get_first_move()
 
         mouvement = []          # Va contenir tous les mouvements possibles
 
@@ -27,6 +27,12 @@ class ChessBoard:
 
             # Le tuple contenant la position du pion
             posX, posY = new_position
+
+            if is_first_move == True:
+                new_pos = (posX, posY-2)
+                if new_pos[1] >= 0 and new_pos[1] <= 7 and self._is_there_pawn_at_position(new_pos) == False:
+                    # Le mouvement en avant du pion
+                    mouvement.append(new_pos)
 
             new_pos = (posX, posY-1)
 
@@ -38,12 +44,16 @@ class ChessBoard:
 
         else:  # S'il est noir
             # Le tuple contenant la position du pion
+
+            if is_first_move == True:
+                new_pos = (posX, posY-2)
+                if new_pos[1] >= 0 and new_pos[1] <= 7 and self._is_there_pawn_at_position(new_pos) == False:
+                    # Le mouvement en avant du pion
+                    mouvement.append(new_pos)
+
             posX, posY = new_position
 
             new_pos = (posX, posY+1)
-
-            p = self._get_pawn_at(new_pos)
-            p.resume()
 
             if new_pos[1] >= 0 and new_pos[1] <= 7 and self._is_there_pawn_at_position(new_pos) == False:
                 # Le mouvement en avant du pion

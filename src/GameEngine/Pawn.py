@@ -78,11 +78,11 @@ class Pawn:
         return False
 
     def move_to(self, position):
+        if self._first_move == True:
+            self._first_move == False
+
         # On modifie la position de la pièce actuelle
-        self._position = tulpe_position(position[0], position[1])
-        # On génère les nouvelles positions
-        self._allowed_moves = self._generate_new_moves(
-            tulpe_position(position[0], position[1]))
+        self._position = position
 
     def _determinate_color(self, pawn_type):
 
@@ -96,6 +96,9 @@ class Pawn:
 
     def set_allowed_moves(self, positions):
         self._allowed_moves = positions
+
+    def get_first_move(self):
+        return self._first_move
 
     def resume(self):
         print("\t"+str(self._pawn_type))

@@ -211,8 +211,6 @@ class ChessBoard:
                     if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
                         tab.append(temp_pos)
 
-        print(tab)
-
         # La ligne inférieur
         for i in range(-1, 2, 1):
             temp_pos = (pos[0]+i, pos[1]-1)
@@ -230,8 +228,6 @@ class ChessBoard:
                         print("AJout")
 
         # Faire les deux cotés manquants
-
-        print(tab)
 
         temp_pos = (pos[0]-1, pos[1])
 
@@ -254,6 +250,8 @@ class ChessBoard:
                 # Si c'est un pion adversaire on le rajoute aux mouvements possibles
                 if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
                     tab.append(temp_pos)
+
+        tab.append(new_position) # On rajoute sa propre place
 
         return tab
 

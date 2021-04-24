@@ -19,6 +19,7 @@ class Pawn:
         self._number_of_mouvement = 0
         # Vérifie si le pion a bouger de deux position
         self._has_doubled = False
+        self._unicode = self._init_unicode()
 
     def get_allowed_moves(self):
         """
@@ -110,6 +111,29 @@ class Pawn:
 
     def get_number_of_mouvement(self):
         return self._number_of_mouvement
+
+    def _init_unicode(self):
+
+        if self.get_pawn_type()[1] == "p":  # si'cest un simple pawn
+            return '\u2659' if self._is_white == True else '\u265F'
+
+        elif self.get_pawn_type()[1] == "b":  # Si c'est un bishop
+            return '\u2657' if self._is_white == True else '\u265D'
+
+        elif self.get_pawn_type()[1] == "Q":  # Si c'est la Queen
+            return '\u2655' if self._is_white == True else '\u265B'
+
+        elif self.get_pawn_type()[1] == "K":  # Si c'est le King
+            return '\u2654' if self._is_white == True else '\u265A'
+
+        elif self.get_pawn_type()[1] == "k":  # Si c'est un knight
+            return '\u2658' if self._is_white == True else '\u265E'
+
+        else:  # Si c'est le rook
+            return '\u2656' if self._is_white == True else '\u265C'
+
+    def get_unicode(self):
+        return self._unicode
 
     def get_has_doubled(self):
         return self._has_doubled

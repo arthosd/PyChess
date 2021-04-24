@@ -5,6 +5,7 @@ from src.GameEngine.Pawn import Pawn
 from src.GameEngine.Position import tulpe_position, string_position
 from src.FileEngine.history import write_in_history, close_file
 from src.FileEngine.load import serialize_object
+import configparser
 
 
 class ChessBoard:
@@ -18,6 +19,10 @@ class ChessBoard:
         # Quand = True le partie s'arrete et le vainqueur est désigné
         self._stop_game = False
         self._compteur_partie = 1   # Le compteur d'une partie
+
+        # Parser
+        self.__cfg = configparser.ConfigParser()
+        self.__cfg.read('Config/config.cfg')  # Open config file
 
     def _can_get_promoted(self, pawn):
         """
@@ -880,7 +885,8 @@ class ChessBoard:
             posx = white.get_position()[1]  # La position X du pawn
             posY = white.get_position()[0]  # La position Y du pawn
 
-            drawing_board[posx][posY] = white.get_pawn_type()  # Le nom du pion
+            drawing_board[posx][posY] = white.get_unicode() if self.__cfg.get(
+                "UNICODE", "unicode") == "true" else white.get_pawn_type()  # Le nom du pion
 
         # On place les Noirs
         for black in self.state[1]:
@@ -888,7 +894,8 @@ class ChessBoard:
             posx = black.get_position()[1]  # La position X du pawn
             posY = black.get_position()[0]  # La position Y du pawn
 
-            drawing_board[posx][posY] = black.get_pawn_type()  # Le nom du pion
+            drawing_board[posx][posY] = black.get_unicode() if self.__cfg.get(
+                "UNICODE", "unicode") == "true" else black.get_pawn_type()
 
         # On dessine les lettres
 

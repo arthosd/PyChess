@@ -141,4 +141,5 @@ class Pawn:
     def promote(self):
         if self.get_pawn_type()[1] == "p":
             self._pawn_type = "wQ" if self._is_white == True else "bQ"
+            self._unicode = '\u2655' if self._is_white == True else '\u265B'
         pass

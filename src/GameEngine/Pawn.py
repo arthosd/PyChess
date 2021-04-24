@@ -15,6 +15,10 @@ class Pawn:
         self._is_white = self._determinate_color(pawn_type)  # Boolean
         # Les mouvements autorisés
         self._allowed_moves = []
+        # Le nombre de fois qu'a bouger ce pion
+        self._number_of_mouvement = 0
+        # Vérifie si le pion a bouger de deux position
+        self._has_doubled = False
 
     def get_allowed_moves(self):
         """
@@ -103,6 +107,12 @@ class Pawn:
         print("\t"+str(self._pawn_type))
         print("\t"+str(self._position))
         print("\t"+str(self._is_white))
+
+    def get_number_of_mouvement(self):
+        return self._number_of_mouvement
+
+    def get_has_doubled(self):
+        return self._has_doubled
 
     def promote(self):
         if self.get_pawn_type()[1] == "p":

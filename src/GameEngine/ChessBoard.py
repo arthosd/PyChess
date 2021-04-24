@@ -19,6 +19,25 @@ class ChessBoard:
         self._stop_game = False
         self._compteur_partie = 1   # Le compteur d'une partie
 
+    def _can_get_promoted(self, pawn):
+        """
+        Vérifie si un pion peut etre promu ou non
+        """
+
+        # S'il est noir et tout en bas
+        if pawn.get_position()[1] == 7 and pawn.get_is_white() == False:
+            # On transforme le pion
+            print("Pawn is promoted !")
+            write_in_history("Pawn is promoted")
+            pawn.promote()
+            return
+
+        if pawn.get_position()[1] == 0 and pawn.get_is_white() == True:
+            print("Pawn is promoted !")
+            write_in_history("Pawn is promoted")
+            pawn.promote()
+            return
+
     def _simple_pawn_moves_generation(self, pawn, new_position):
         """
         Genère les positions du pions.
@@ -251,7 +270,7 @@ class ChessBoard:
                 if self._get_pawn_at(temp_pos).get_is_white() != pawn.get_is_white():
                     tab.append(temp_pos)
 
-        tab.append(new_position) # On rajoute sa propre place
+        tab.append(new_position)  # On rajoute sa propre place
 
         return tab
 
@@ -283,6 +302,7 @@ class ChessBoard:
                 stop_generating = True
 
         stop_generating = False
+        temp_pos = pos
 
         # On fait l'horizontal - droit
         while stop_generating == False:
@@ -301,6 +321,7 @@ class ChessBoard:
                 stop_generating = True
 
         stop_generating = False
+        temp_pos = pos
 
         # On fait la vertical - bas
         while stop_generating == False:
@@ -318,6 +339,7 @@ class ChessBoard:
                 stop_generating = True
 
         stop_generating = False
+        temp_pos = pos
 
         # On fait la vertical - haut
         while stop_generating == False:
@@ -473,6 +495,8 @@ class ChessBoard:
 
         stop_generating = False
 
+        temp_pos = pos
+
         # On fait l'horizontal - droit
         while stop_generating == False:
 
@@ -490,6 +514,7 @@ class ChessBoard:
                 stop_generating = True
 
         stop_generating = False
+        temp_pos = pos
 
         # On fait la vertical - bas
         while stop_generating == False:
@@ -508,6 +533,7 @@ class ChessBoard:
                 stop_generating = True
 
         stop_generating = False
+        temp_pos = pos
 
         # On fait la vertical - haut
         while stop_generating == False:
@@ -717,6 +743,8 @@ class ChessBoard:
                 pawn_selected, moves)  # On choisi un destination
 
             self._eatOrMove(pawn_selected, destination)
+
+            self._can_get_promoted(pawn_selected)
 
             self.draw_board()
             self._compteur_partie = self._compteur_partie + 1

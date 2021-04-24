@@ -103,3 +103,8 @@ class Pawn:
         print("\t"+str(self._pawn_type))
         print("\t"+str(self._position))
         print("\t"+str(self._is_white))
+
+    def promote(self):
+        if self.get_pawn_type()[1] == "p":
+            self._pawn_type = "wQ" if self._is_white == True else "bQ"
+        pass

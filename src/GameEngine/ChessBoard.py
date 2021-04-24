@@ -42,7 +42,7 @@ class ChessBoard:
 
             # Vérifier qu'il y a un pion dans les digonales
 
-            new_pos = (posX+1, posY + 1)
+            new_pos = (posX+1, posY - 1)
 
             if self._is_there_pawn_at_position(new_pos) == True:
 
@@ -51,7 +51,7 @@ class ChessBoard:
                 if temp_pawn.get_is_white() != pawn.get_is_white():  # S'il est de couleur différente du pion
                     mouvement.append(new_pos)
 
-            new_pos = (posX - 1, posY + 1)
+            new_pos = (posX - 1, posY - 1)
 
             if self._is_there_pawn_at_position(new_pos) == True:
 
@@ -81,7 +81,7 @@ class ChessBoard:
 
             # Il faut faire les mouvement de manger
 
-            new_pos = (posX+1, posY - 1)
+            new_pos = (posX+1, posY + 1)
 
             if self._is_there_pawn_at_position(new_pos) == True:
 
@@ -90,7 +90,7 @@ class ChessBoard:
                 if temp_pawn.get_is_white() != pawn.get_is_white():  # S'il est de couleur différente du pion
                     mouvement.append(new_pos)
 
-            new_pos = (posX - 1, posY - 1)
+            new_pos = (posX - 1, posY + 1)
 
             if self._is_there_pawn_at_position(new_pos) == True:
 
@@ -651,11 +651,12 @@ class ChessBoard:
 
         destination_pawn = self._get_pawn_at(destination)
 
-        if destination_pawn == None:
-            # On bouge le pion
-            pawn.move_to(destination)
-        else:
+        if destination_pawn != None:
+            # on mange le pion
             self._eat(destination_pawn)
+
+        # On bouge le pion
+        pawn.move_to(destination)
 
     def play(self):
         """

@@ -33,3 +33,14 @@ def load_object(file_path="save/save.pickle"):
     fichier.close()
 
     return obj
+
+
+def is_there_saved_game(file="save/save.pickle"):
+    """
+    Retourne Vrai s'il y a une partie déjà sauvegardéé
+    """
+
+    if os.path.exists(file) == False:
+        return False
+
+    return True

@@ -12,7 +12,7 @@ class ChessBoard:
     def __init__(self, state=[]):
         # Les pions qui sont sur le tablier
         self.state = self._generate_state(state)
-        self.white_to_move = False  # Les pions blanc joue
+        self.white_to_move = True  # Les pions blanc joue
         self.white_points = []      # Tableau qui va contenir les pions mangé par les blancs
         self.black_points = []      # Tableau qui va contenir les pions mangé par les blancs
         # Quand = True le partie s'arrete et le vainqueur est désigné
@@ -694,7 +694,6 @@ class ChessBoard:
 
         while self._stop_game == False:
 
-            self.white_to_move = not self.white_to_move  # C'est à l'autre équipe de jouer
             team_name = "White" if self.white_to_move == True else "Black"
 
             sentence = "========== " + \
@@ -707,6 +706,7 @@ class ChessBoard:
 
             if pawn_selected == None:
                 print("La partie à bien été enregistré")
+                print(self.white_to_move)
                 break
 
             sentence = str(team_name)+" chose " + \
@@ -722,16 +722,17 @@ class ChessBoard:
 
             self.draw_board()
             self._compteur_partie = self._compteur_partie + 1
+            self.white_to_move = not self.white_to_move  # C'est à l'autre équipe de jouer
 
         # On déclare le vainqueur
         if self.white_to_move == True:
-            print("Whites wins.")
+            print("Blacks wins.")
             sentence = "================= ================= ==============="
             write_in_history(sentence)
             sentence = "Whites Wins"
             write_in_history(sentence)
         else:
-            print("Blacks win.")
+            print("Whites win.")
             sentence = "================= ================= ==============="
             write_in_history(sentence)
             sentence = "Blacks Wins"

@@ -1,15 +1,27 @@
 # Point d'entrée du jeu d'échec
 from src.GameEngine.ChessBoard import ChessBoard
 from src.GameEngine.Pawn import Pawn
-from src.FileEngine.load import serialize_object, load_object
+from src.FileEngine.load import load_object, is_there_saved_game
 
-chessBoard = ChessBoard()
-# chessBoard.draw_board()
+chessBoard = None
 
-# serialize_object(chessBoard)
+print("Welcome to pychess !")
 
-# chessBoard.play()
+if is_there_saved_game() == False:
+    print("You have no saved game !")
+    print("Be aware that you can save at the beggining of your turn by typing save while choosing pawn.")
+    chessBoard = ChessBoard()
 
-chessBoard = load_object()
+else:
+    answer = input("You have saved a game, do you want to load it ? (y/n) : ")
+
+    if answer == "y" or answer == "Y":
+        # On load le pickle file
+        chessBoard = load_object()
+        print(chessBoard.white_to_move)
+    else:
+        # On réinitialise la game
+        chessBoard = ChessBoard()
 
 chessBoard.draw_board()
+chessBoard.play()

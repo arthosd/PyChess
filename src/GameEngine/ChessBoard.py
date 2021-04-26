@@ -18,6 +18,7 @@ class ChessBoard:
         self.black_points = []      # Tableau qui va contenir les pions mangé par les blancs
         # Quand = True le partie s'arrete et le vainqueur est désigné
         self._stop_game = False
+        self._king_captured = False
         self._compteur_partie = 1   # Le compteur d'une partie
 
         # Parser
@@ -615,24 +616,36 @@ class ChessBoard:
             if position == "save":
                 # On sauvegarde le jeu et on quitte
                 serialize_object(self)
+                print("Game saved")
                 return (None, None)
 
-            position = tulpe_position(position[0], position[1])
-            pawn = self._get_pawn_at(position)
+            if position == "exit":
+                return (None, None)
 
-            # Si le pion existe et qu'il est de la meme couleur que le joueur
-            if pawn != None and pawn.get_is_white() == is_white:
-                moves = self._generate_moves(pawn)
+            if len(position) == 2:
 
-                if len(moves) != 0:
-                    return (pawn, moves)
+                if position[0] in ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] and position[1] in ["1", "2", "3", "4", "5", "6", "7", "8"]:
+
+                    position = tulpe_position(position[0], position[1])
+                    pawn = self._get_pawn_at(position)
+
+                    # Si le pion existe et qu'il est de la meme couleur que le joueur
+                    if pawn != None and pawn.get_is_white() == is_white:
+                        moves = self._generate_moves(pawn)
+
+                        if len(moves) != 0:
+                            return (pawn, moves)
+                        else:
+                            print("Pas de position possible pour cette pièce")
+                    else:
+                        if pawn == None:
+                            print("No piece at this position.")
+                        else:
+                            print("It's not your piece")
                 else:
-                    print("Pas de position possible pour cette pièce")
+                    print("Enter valid position")
             else:
-                if pawn == None:
-                    print("No piece at this position.")
-                else:
-                    print("It's not your piece")
+                print("Enter valid position")
 
     def _select_destination(self, pawn, moves):
         """
@@ -676,10 +689,12 @@ class ChessBoard:
                     if pawn_eaten.get_pawn_type()[1] == "K":
                         sentence = "A king is dead"
                         write_in_history(sentence)
+                        self.white_to_move = not self.white_to_move
                         self._stop_game = True
+                        self._king_captured = True
 
                 compteur = compteur + 1
-        else:  # S'il est noir
+        else:  # S'il est noirFalse
             # On change dans les noirs
             compteur = 0
 
@@ -734,8 +749,6 @@ class ChessBoard:
                 self.white_to_move)    # On choisi un pion
 
             if pawn_selected == None:
-                print("La partie à bien été enregistré")
-                print(self.white_to_move)
                 break
 
             sentence = str(team_name)+" chose " + \
@@ -756,17 +769,26 @@ class ChessBoard:
             self.white_to_move = not self.white_to_move  # C'est à l'autre équipe de jouer
 
         # On déclare le vainqueur
-        if self.white_to_move == True:
-            print("Blacks wins.")
-            sentence = "================= ================= ==============="
-            write_in_history(sentence)
-            sentence = "Whites Wins"
-            write_in_history(sentence)
+
+        if self._king_captured == True:
+
+            if self.white_to_move == True:
+                print("Blacks wins.")
+                sentence = "================= ================= ==============="
+                write_in_history(sentence)
+                sentence = "Whites Wins"
+                write_in_history(sentence)
+            else:
+                print("Whites win.")
+                sentence = "================= ================= ==============="
+                write_in_history(sentence)
+                sentence = "Blacks Wins"
+                write_in_history(sentence)
         else:
-            print("Whites win.")
+            print("Game exit")
             sentence = "================= ================= ==============="
             write_in_history(sentence)
-            sentence = "Blacks Wins"
+            sentence = "Game exit"
             write_in_history(sentence)
 
     def _is_pawn_eatable(self, pawn):

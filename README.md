@@ -1,5 +1,5 @@
 # Pychess
-
+Ce projet est un projet Universitaire à l'Université Paris Cité
 # Introduction
 
 Ce document met en excergue les différentes parties du code ainsi que la structure générale de ce dernier. Il est divisé en trois grandes parties :
